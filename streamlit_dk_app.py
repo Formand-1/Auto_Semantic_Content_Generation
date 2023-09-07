@@ -50,6 +50,21 @@ from apify_client import ApifyClient
 import pandas as pd
 import streamlit as st
 
+def generate_txt_content(df):
+    return df.to_string()
+
+def generate_xml_content(df):
+    return df.to_xml()
+
+def generate_json_content(df):
+    return df.to_json()
+
+def generate_csv_content(df):
+    return df.to_csv(index=False)
+
+def generate_md_content(df):
+    return df.to_markdown()
+
 @st.cache_data(show_spinner=False)
 def scrape_google(search):
     # Define the Apify API URL and the actor's name
@@ -544,6 +559,29 @@ def main():
             openai.api_key = user_api_key
             with st.spinner("Generating content..."):
                 final_draft = generate_article(topic)
+                # Let users choose a format
+selected_format = st.selectbox("Choose download format", ["txt", "xml", "json", "csv", "md"])
+
+# Generate content based on chosen format
+data_to_download = final_draft  # Assuming final_draft is a string
+if selected_format == "txt":
+    pass  # final_draft is already in text format
+elif selected_format == "xml":
+    data_to_download = "XML format not supported for this content"  # Placeholder, unless you have a function to convert to XML
+elif selected_format == "json":
+    data_to_download = "JSON format not supported for this content"  # Placeholder, unless you have a function to convert to JSON
+elif selected_format == "csv":
+    data_to_download = "CSV format not supported for this content"  # Placeholder, unless you have a function to convert to CSV
+elif selected_format == "md":
+    pass  # Assuming the content is already in Markdown or is text-based
+
+# Download button
+st.download_button(
+    label="Download Article",
+    data=data_to_download.encode(),
+    file_name=f"article.{selected_format}",
+    mime="text/plain"
+)
                 #st.markdown(final_draft)
         else:
             st.warning("Please enter your OpenAI API key above.")
