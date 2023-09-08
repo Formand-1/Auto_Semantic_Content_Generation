@@ -555,38 +555,37 @@ def main():
     user_api_key = st.text_input("Enter your OpenAI API key")
 
     if st.button('Generate Content'):
-        if user_api_key:
-            openai.api_key = user_api_key
-            with st.spinner("Generating content..."):
-                final_draft = generate_article(topic)
+     if user_api_key:
+         openai.api_key = user_api_key
+         with st.spinner("Generating content..."):
+             final_draft = generate_article(topic)
 
-                # Set a default value for data_to_download
-                data_to_download = final_draft or "No data available"
+         # Set a default value for data_to_download
+         data_to_download = final_draft or "No data available"
 
-                # Let users choose a format
-                selected_format = st.selectbox("Choose download format", ["txt", "xml", "json", "csv", "md"])
+         # Let users choose a format
+         selected_format = st.selectbox("Choose download format", ["txt", "xml", "json", "csv", "md"])
 
-                # Generate content based on chosen format
-                if selected_format == "txt":
-                    pass  # final_draft is already in text format
-                elif selected_format == "xml":
-                    data_to_download = "XML format not supported for this content"  
-                elif selected_format == "json":
-                    data_to_download = "JSON format not supported for this content"
-                elif selected_format == "csv":
-                    data_to_download = "CSV format not supported for this content"
-                elif selected_format == "md":
-                    pass  # Assuming the content is already in Markdown or is text-based
+         # Generate content based on chosen format
+         if selected_format == "txt":
+             pass  # final_draft is already in text format
+         elif selected_format == "xml":
+             data_to_download = "XML format not supported for this content"  
+         elif selected_format == "json":
+             data_to_download = "JSON format not supported for this content"
+         elif selected_format == "csv":
+             data_to_download = "CSV format not supported for this content"
+         elif selected_format == "md":
+             pass  # Assuming the content is already in Markdown or is text-based
 
-                # Download button
-                st.download_button(
-                    label="Download Article",
-                    data=data_to_download.encode(),
-                    file_name=f"article.{selected_format}",
-                    mime="text/plain")
-                #st.markdown(final_draft)
-        else:
-            st.warning("Please enter your OpenAI API key above.")
+         # Download button
+         st.download_button(
+             label="Download Article",
+             data=data_to_download.encode(),
+             file_name=f"article.{selected_format}",
+             mime="text/plain")
+     else:
+         st.warning("Please enter your OpenAI API key above.")
 
 if __name__ == "__main__":
     main()
