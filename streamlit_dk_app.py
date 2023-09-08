@@ -126,7 +126,7 @@ def scrape_article(url):
         article.download()
         article.parse()
         return article.text
-        except:
+    except:
         return ""
 
 
