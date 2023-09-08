@@ -556,11 +556,10 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
    
 
 
-
 def main():
     st.title('Long-form Article Generator with Semantic SEO Understanding')
    
-    # Tilføj ekstra mellemrum efter "title:"
+    # Add extra space after "title:"
     st.markdown("\n\n\n")
     
     st.markdown('''
@@ -573,7 +572,7 @@ def main():
     ** If you get an error, (sometimes OpenAI will be overloaded and not work), just press generate again and it should start where it left off.
     ''')
 
-    # Tilføj ekstra mellemrum før "Enter topic:"
+    # Add extra space before "Enter topic:"
     st.markdown("\n\n\n")
 
     topic = st.text_input("Enter topic:", "How to learn programmatic SEO in 2023")
@@ -585,37 +584,37 @@ def main():
     if st.button('Generate and Download Content'):
         if user_api_key:
             openai.api_key = user_api_key
-            with st.spinner("Generating content..."):
-                final_draft = generate_article(topic)
+            try:
+                with st.spinner("Generating content..."):
+                    final_draft = generate_article(topic)
                 
-            # Initialize data_to_download with an error message
-            data_to_download = "An error occurred while generating the content."
-    
-            # Prepare data for download based on selected format
-            if selected_format == "Text":
-                data_to_download = final_draft
-            elif selected_format == "HTML":
-                data_to_download = final_draft  # You might want to convert the content to HTML format in the future
-            elif selected_format == "CSV":
-                data_to_download = article_to_csv(topic, final_draft)
-            elif selected_format == "Markdown":
-                data_to_download = final_draft
+                # Prepare data for download based on selected format
+                if selected_format == "Text":
+                    data_to_download = final_draft
+                elif selected_format == "HTML":
+                    # Convert Markdown to HTML here if desired
+                    data_to_download = final_draft
+                elif selected_format == "CSV":
+                    data_to_download = article_to_csv(topic, final_draft)
+                elif selected_format == "Markdown":
+                    data_to_download = final_draft
 
-            # File name based on the topic
-            file_name = topic.lower().replace(" ", "-") + f".{selected_format.lower()}"
+                # File name based on the topic
+                file_name = topic.lower().replace(" ", "-") + f".{selected_format.lower()}"
 
-            # Download button
-            st.download_button(
-                label="Download Article",
-                data=data_to_download.encode(),
-                file_name=file_name,
-                mime="text/plain")
+                # Download button
+                st.download_button(
+                    label="Download Article",
+                    data=data_to_download.encode(),
+                    file_name=file_name,
+                    mime="text/plain")
+
+            except Exception as e:
+                st.error(f"An error occurred: {str(e)}")
         else:
             st.warning("Please enter your OpenAI API key above.")
 
+# Make sure to define the generate_article and article_to_csv functions above this main function.
+
 if __name__ == "__main__":
     main()
-
-
-
-
