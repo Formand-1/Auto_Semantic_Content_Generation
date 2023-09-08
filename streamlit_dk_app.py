@@ -580,9 +580,8 @@ st.download_button(
     label="Download Article",
     data=data_to_download.encode(),
     file_name=f"article.{selected_format}",
-    mime="text/plain"
-)
-                #st.markdown(final_draft)
+    mime="text/plain")
+#st.markdown(final_draft)
         else:
             st.warning("Please enter your OpenAI API key above.")
 
