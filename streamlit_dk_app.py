@@ -559,12 +559,14 @@ def main():
             openai.api_key = user_api_key
             with st.spinner("Generating content..."):
                 final_draft = generate_article(topic)
-                
+
+                # Set a default value for data_to_download
+                  data_to_download = final_draft or "No data available"
+
                 # Let users choose a format
                 selected_format = st.selectbox("Choose download format", ["txt", "xml", "json", "csv", "md"])
 
                 # Generate content based on chosen format
-                data_to_download = final_draft  # Assuming final_draft is a string
                 if selected_format == "txt":
                     pass  # final_draft is already in text format
                 elif selected_format == "xml":
