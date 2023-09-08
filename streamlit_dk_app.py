@@ -1,34 +1,39 @@
 # Import necessary libraries
-import requests
+
+# Standard library imports
 import os
+import json
+import time
+import statistics
+import collections
+import re
+
+# Third-party library imports
+import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.probability import FreqDist
-from nltk.collocations import BigramAssocMeasures, BigramCollocationFinder
+from nltk.collocations import (
+    BigramAssocMeasures, BigramCollocationFinder,
+    TrigramAssocMeasures, TrigramCollocationFinder,
+    QuadgramAssocMeasures, QuadgramCollocationFinder
+)
 import newspaper
 from newspaper import Article
-import nltk
-import statistics
-import collections
-from nltk.collocations import TrigramAssocMeasures, TrigramCollocationFinder
-from nltk.collocations import QuadgramAssocMeasures, QuadgramCollocationFinder
-import time
 import openai
-import pandas as pd
-import re
 import streamlit as st
 from apify_client import ApifyClient
-import pandas as pd
 import transformers
 from transformers import GPT2Tokenizer
 
-import json
-#openai.api_key = openai.api_key = os.environ['openai_api_key']
+# Setup OpenAI API
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 
-
+# Comment out NLTK Downloads after the first run to prevent repeated downloads
+"""
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
@@ -43,6 +48,7 @@ nltk.download('gutenberg')
 nltk.download('genesis')
 nltk.download('trigram_collocations')
 nltk.download('quadgram_collocations')
+"""
 
 def sanitize_filename(filename: str) -> str:
     """Sanitize a string to be used as a filename."""
