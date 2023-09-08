@@ -535,7 +535,6 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
 
 
-
 def main():
     st.title('Long-form Article Generator with Semantic SEO Understanding')
    
@@ -568,6 +567,8 @@ def main():
                 final_draft = generate_article(topic)
 
             # Prepare data for download based on selected format
+            data_to_download = "Data format not supported or content not available"  # Default value
+
             if selected_format == "txt":
                 data_to_download = final_draft
             elif selected_format == "xml":
