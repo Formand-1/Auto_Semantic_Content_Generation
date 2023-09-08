@@ -556,7 +556,7 @@ def main():
     st.markdown("\n\n\n")
 
     topic = st.text_input("Enter topic:", "How to learn programmatic SEO in 2023")
-    user_api_key = st.text_input("Enter your OpenAI API key")
+    user_api_key = st.sidebar.text_input("Enter your OpenAI API key", type='password')
 
     # Let users choose a format upfront with "md" as default value
     selected_format = st.selectbox("Choose download format", ["md", "txt", "xml", "json", "csv"])
