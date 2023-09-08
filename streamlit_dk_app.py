@@ -540,52 +540,47 @@ def main():
     st.title('Long-form Article Generator with Semantic SEO Understanding')
     
     st.markdown('''
-    Welcome to the long-form article generator! This application leverages advanced AI to create comprehensive articles based on the topic you provide. 
+    Welcome to the ##long-form article generator!## This application leverages advanced AI to create comprehensive articles based on the topic you provide. 
 
-    Not only does it generate articles, but it also includes a Semantic SEO understanding. This means it takes into consideration the semantic context and relevance of your topic, based on current search engine results.
+    Not only does it generate articles, but it also includes a Semantic SEO understanding. This means it takes into consideration the semantic context and relevance of your topic, based on the current 10 best SERP results.
 
     Just input your topic below and let the AI do its magic!
     
     ** If you get an error, (sometimes OpenAI will be overloaded and not work), just press generate again and it should start where it left off.
     ''')
-   
-    topic = st.text_input("Enter topic:", "Digital PR tips to earn media coverage in 2023")
-
-    # Get user input for API key
+    
+    topic = st.text_input("Enter topic:", "How to learn programmatic SEO in 2023")
     user_api_key = st.text_input("Enter your OpenAI API key")
 
-    if st.button('Generate Content'):
-     if user_api_key:
-         openai.api_key = user_api_key
-         with st.spinner("Generating content..."):
-             final_draft = generate_article(topic)
+    # Let users choose a format upfront with "md" as default value
+    selected_format = st.selectbox("Choose download format", ["md", "txt", "xml", "json", "csv"])
 
-         # Set a default value for data_to_download
-         data_to_download = final_draft or "No data available"
+    if st.button('Generate and Download Content'):
+        if user_api_key:
+            openai.api_key = user_api_key
+            with st.spinner("Generating content..."):
+                final_draft = generate_article(topic)
 
-         # Let users choose a format
-         selected_format = st.selectbox("Choose download format", ["txt", "xml", "json", "csv", "md"])
+            # Prepare data for download based on selected format
+            if selected_format == "txt":
+                data_to_download = final_draft
+            elif selected_format == "xml":
+                data_to_download = "XML format not supported for this content"
+            elif selected_format == "json":
+                data_to_download = "JSON format not supported for this content"
+            elif selected_format == "csv":
+                data_to_download = "CSV format not supported for this content"
+            elif selected_format == "md":
+                data_to_download = final_draft
 
-         # Generate content based on chosen format
-         if selected_format == "txt":
-             pass  # final_draft is already in text format
-         elif selected_format == "xml":
-             data_to_download = "XML format not supported for this content"  
-         elif selected_format == "json":
-             data_to_download = "JSON format not supported for this content"
-         elif selected_format == "csv":
-             data_to_download = "CSV format not supported for this content"
-         elif selected_format == "md":
-             pass  # Assuming the content is already in Markdown or is text-based
-
-         # Download button
-         st.download_button(
-             label="Download Article",
-             data=data_to_download.encode(),
-             file_name=f"article.{selected_format}",
-             mime="text/plain")
-     else:
-         st.warning("Please enter your OpenAI API key above.")
+            # Download button
+            st.download_button(
+                label="Download Article",
+                data=data_to_download.encode(),
+                file_name=f"article.{selected_format}",
+                mime="text/plain")
+        else:
+            st.warning("Please enter your OpenAI API key above.")
 
 if __name__ == "__main__":
     main()
