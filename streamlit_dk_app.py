@@ -540,7 +540,7 @@ def main():
     st.title('Long-form Article Generator with Semantic SEO Understanding')
     
     st.markdown('''
-    Welcome to the ## long-form article generator! ## This application leverages advanced AI to create comprehensive articles based on the topic you provide. 
+    Welcome to the **long-form article generator!** This application leverages advanced AI to create comprehensive articles based on the topic you provide. 
 
     Not only does it generate articles, but it also includes a Semantic SEO understanding. This means it takes into consideration the semantic context and relevance of your topic, based on the current 10 best SERP results.
 
