@@ -538,6 +538,9 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
 def main():
     st.title('Long-form Article Generator with Semantic SEO Understanding')
+   
+    # Tilføj ekstra mellemrum efter "title:"
+    st.markdown("\n\n\n")
     
     st.markdown('''
     Welcome to the **long-form article generator!** This application leverages advanced AI to create comprehensive articles based on the topic you provide. 
@@ -548,7 +551,10 @@ def main():
     
     ** If you get an error, (sometimes OpenAI will be overloaded and not work), just press generate again and it should start where it left off.
     ''')
-    
+
+    # Tilføj ekstra mellemrum før "Enter topic:"
+    st.markdown("\n\n\n")
+
     topic = st.text_input("Enter topic:", "How to learn programmatic SEO in 2023")
     user_api_key = st.text_input("Enter your OpenAI API key")
 
