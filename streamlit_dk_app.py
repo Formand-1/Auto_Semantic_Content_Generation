@@ -28,6 +28,8 @@ import streamlit as st
 from apify_client import ApifyClient
 import transformers
 from transformers import GPT2Tokenizer
+import csv
+from io import StringIO
 
 # Setup OpenAI API
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
@@ -67,6 +69,23 @@ def generate_csv_content(df):
 
 def generate_md_content(df):
     return df.to_markdown()
+
+
+def article_to_csv(topic, content):
+    """Converts the generated article topic and content into a CSV format."""
+    # Opret en StringIO-buffer til at gemme CSV-data
+    csv_buffer = StringIO()
+    csv_writer = csv.writer(csv_buffer)
+    
+    # Tilføj header til CSV
+    csv_writer.writerow(["Title", "Content", "Excerpt", "Categories", "Tags"])
+    
+    # Tilføj artiklens data
+    csv_writer.writerow([topic, content, "", "", ""])
+    
+    # Returnér CSV-data som en streng
+    return csv_buffer.getvalue()
+
 
 @st.cache_data(show_spinner=False)
 def scrape_google(search):
@@ -540,7 +559,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
 def main():
     st.title('Long-form Article Generator with Semantic SEO Understanding')
-
+   
     # Tilføj ekstra mellemrum efter "title:"
     st.markdown("\n\n\n")
     
@@ -549,7 +568,7 @@ def main():
 
     Not only does it generate articles, but it also includes a Semantic SEO understanding. This means it takes into consideration the semantic context and relevance of your topic, based on the current 10 best SERP results.
 
-    Input your topic below and let the LLM (Large Language Model) create a detailed article.
+    Just input your topic below and let the AI do its magic!
     
     ** If you get an error, (sometimes OpenAI will be overloaded and not work), just press generate again and it should start where it left off.
     ''')
@@ -558,28 +577,36 @@ def main():
     st.markdown("\n\n\n")
 
     topic = st.text_input("Enter topic:", "How to learn programmatic SEO in 2023")
-
-    # Get the OpenAI API key from the sidebar
-    openai_api_key = st.sidebar.text_input("Enter your OpenAI API key", type='password')
+    user_api_key = st.sidebar.text_input("Enter your OpenAI API key", type='password')
 
     # Let users choose a format upfront with "Markdown" as default value
-    selected_format = st.selectbox("Choose download format", ["Markdown", "Plain Text", "CSV", "HTML"])
+    selected_format = st.selectbox("Choose download format", ["Markdown", "Text", "CSV", "HTML"])
 
     if st.button('Generate and Download Content'):
-        if openai_api_key:
+        if user_api_key:
+            openai.api_key = user_api_key
             with st.spinner("Generating content..."):
-                final_draft = generate_article(topic, openai_api_key)
+                final_draft = generate_article(topic)
 
             # Prepare data for download based on selected format
-            data_to_download = prepare_data_for_download(final_draft, selected_format)
+            if selected_format == "Text":
+                data_to_download = final_draft
+            elif selected_format == "HTML":
+                data_to_download = final_draft  # You might want to convert the content to HTML format in the future
+            elif selected_format == "CSV":
+                data_to_download = article_to_csv(topic, final_draft)
+            elif selected_format == "Markdown":
+                data_to_download = final_draft
+
+            # File name based on the topic
+            file_name = topic.lower().replace(" ", "-") + f".{selected_format.lower()}"
 
             # Download button
             st.download_button(
                 label="Download Article",
                 data=data_to_download.encode(),
-                file_name=f"{sanitize_filename(topic)}.{get_file_extension(selected_format)}",
-                mime=get_mime_type(selected_format)
-            )
+                file_name=file_name,
+                mime="text/plain")
         else:
             st.warning("Please enter your OpenAI API key above.")
 
