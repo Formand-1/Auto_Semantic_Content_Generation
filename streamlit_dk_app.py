@@ -33,7 +33,6 @@ from transformers import GPT2Tokenizer
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 
 # Comment out NLTK Downloads after the first run to prevent repeated downloads
-"""
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
@@ -48,7 +47,7 @@ nltk.download('gutenberg')
 nltk.download('genesis')
 nltk.download('trigram_collocations')
 nltk.download('quadgram_collocations')
-"""
+
 
 def sanitize_filename(filename: str) -> str:
     """Sanitize a string to be used as a filename."""
