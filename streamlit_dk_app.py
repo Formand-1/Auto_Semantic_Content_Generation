@@ -561,7 +561,7 @@ def main():
                 final_draft = generate_article(topic)
 
                 # Set a default value for data_to_download
-                  data_to_download = final_draft or "No data available"
+                data_to_download = final_draft or "No data available"
 
                 # Let users choose a format
                 selected_format = st.selectbox("Choose download format", ["txt", "xml", "json", "csv", "md"])
