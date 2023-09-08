@@ -587,7 +587,10 @@ def main():
             openai.api_key = user_api_key
             with st.spinner("Generating content..."):
                 final_draft = generate_article(topic)
-
+                
+            # Initialize data_to_download with an error message
+            data_to_download = "An error occurred while generating the content."
+    
             # Prepare data for download based on selected format
             if selected_format == "Text":
                 data_to_download = final_draft
