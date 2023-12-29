@@ -23,7 +23,7 @@ from nltk.collocations import (
 )
 import newspaper
 from newspaper import Article
-from openai import OpenAI
+import openai
 import streamlit as st
 from apify_client import ApifyClient
 import transformers
@@ -33,7 +33,7 @@ from io import StringIO
 
 # Setup OpenAI API
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-client = OpenAI()
+
 
 # Comment out NLTK Downloads after the first run to prevent repeated downloads
 nltk.download('stopwords')
@@ -341,7 +341,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature
     #st.write(prompt)
     #for i in range(3):
         #try:
-    gpt_response = client.chat.completions.create(
+    gpt_response = openai.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
@@ -368,7 +368,7 @@ def generate_content2(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
     #st.write(prompt)
     #for i in range(3):
         #try:
-    gpt_response = client.chat.completions.create(
+    gpt_response = openai.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can. Return the results in Nicely formatted markdown please."},
@@ -396,7 +396,7 @@ def generate_content3(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
     #st.write(prompt)
     #for i in range(3):
         #try:
-    gpt_response = client.chat.completions.create(
+    gpt_response = openai.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": "Simulate an exceptionally talented investigative journalist and researcher. Given the following text, please write a short paragraph providing only the most important facts and takeaways that can be used later when writing a full analysis or article."},
@@ -417,7 +417,7 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
     prompt = truncate_to_token_length(prompt,1500)
     #for i in range(3):
         #try:
-    gpt_response = client.chat.completions.create(
+    gpt_response = openai.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": """You are an expert at Semantic SEO. In particular, you are superhuman at taking  a given NLTK report on a given text corpus compiled from the text of the linked pages returned for a google search.
