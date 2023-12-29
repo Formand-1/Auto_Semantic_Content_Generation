@@ -23,7 +23,7 @@ from nltk.collocations import (
 )
 import newspaper
 from newspaper import Article
-import openai
+from openai import OpenAI
 import streamlit as st
 from apify_client import ApifyClient
 import transformers
@@ -33,6 +33,7 @@ from io import StringIO
 
 # Setup OpenAI API
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+client = OpenAI()
 
 # Comment out NLTK Downloads after the first run to prevent repeated downloads
 nltk.download('stopwords')
