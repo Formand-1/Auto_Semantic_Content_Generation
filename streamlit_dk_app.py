@@ -336,7 +336,7 @@ def summarize_nlp(df):
 
 
 @st.cache_data(show_spinner=False)
-def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
+def generate_content(prompt, model="gpt-4-turbo-preview", max_tokens=1000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,2500)
     #st.write(prompt)
     #for i in range(3):
@@ -363,7 +363,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature
     #return None
 
 @st.cache_data(show_spinner=False)
-def generate_content2(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
+def generate_content2(prompt, model="gpt-4-turbo-preview", max_tokens=1000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,2500)
     #st.write(prompt)
     #for i in range(3):
@@ -391,7 +391,7 @@ def generate_content2(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
 
     
 @st.cache_data(show_spinner=False)
-def generate_content3(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
+def generate_content3(prompt, model="gpt-4-turbo-preview", max_tokens=1000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,2500)
     #st.write(prompt)
     #for i in range(3):
@@ -413,7 +413,7 @@ def generate_content3(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
     
     
 @st.cache_data(show_spinner=False)
-def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
+def generate_semantic_improvements_guide(prompt,query, model="gpt-4-turbo-preview", max_tokens=2000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,1500)
     #for i in range(3):
         #try:
@@ -444,14 +444,14 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
    
 
 @st.cache_data(show_spinner=False)
-def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=1500):
+def generate_outline(topic, model="gpt-4-turbo-preview", max_tokens=1500):
     prompt = f"Generate an incredibly thorough article outline for the topic: {topic}. Consider all possible angles and be as thorough as possible. Please use Roman Numerals for each section."
     outline = generate_content(prompt, model=model, max_tokens=max_tokens)
     #save_to_file("outline.txt", outline)
     return outline
 
 @st.cache_data(show_spinner=False)
-def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens=1500):
+def improve_outline(outline, semantic_readout, model="gpt-4-turbo-preview", max_tokens=1500):
     prompt = f"Given the following article outline, please improve and extend this outline significantly as much as you can keeping in mind the SEO keywords and data being provided in our semantic seo readout. Do not include a section about semantic SEO itself, you are using the readout to better inform your creation of the outline. Try and include and extend this as much as you can. Please use Roman Numerals for each section. The goal is as thorough, clear, and useful out line as possible exploring the topic in as much depth as possible. Think step by step before answering. Please take into consideration the semantic seo readout provided here: {semantic_readout} which should help inform some of the improvements you can make, though please also consider additional improvements not included in this semantic seo readout.  Outline to improve: {outline}."
     improved_outline = generate_content(prompt, model=model, max_tokens=max_tokens)
     #save_to_file("improved_outline.txt", improved_outline)
@@ -460,7 +460,7 @@ def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens
 
 
 @st.cache_data(show_spinner=False)
-def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
+def generate_sections(improved_outline, model="gpt-4-turbo-preview", max_tokens=2000):
     sections = []
 
     # Parse the outline to identify the major sections
@@ -488,7 +488,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
     return sections
 
 @st.cache_data(show_spinner=False)
-def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
+def improve_section(section, i, model="gpt-4-turbo-preview", max_tokens=1500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Keep whatever hierarchy you find. Only provide the updated section, not the text of your recommendation, just make the changes. Always provide the updated section in valid Markdown please. Updated Section with improvements:"
     prompt = str(prompt)
     improved_section = generate_content2(prompt, model=model, max_tokens=max_tokens)
